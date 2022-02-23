@@ -11,6 +11,8 @@ type Cohort @entity {
   referralPercentage: BigInt!
   ""
   feeConfiguration: FeeConfiguration!
+  ""
+  deployedAt: BigInt!
 }
 
 type User @entity {
@@ -112,6 +114,12 @@ type Transfer @entity {
   to: String!
   ""
   tokenId: BigInt!
+  ""
+  blockNumber: BigInt!
+  ""
+  transactionHash: Bytes!
+  ""
+  timestamp: BigInt!
 }
 
 type Referral @entity {
