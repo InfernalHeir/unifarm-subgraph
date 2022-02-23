@@ -1,6 +1,130 @@
-type ExampleEntity @entity {
-  id: ID!
-  count: BigInt!
-  previousAdmin: Bytes! # address
-  newAdmin: Bytes! # address
+type Cohort @entity {
+  ""
+  cohort: CohortDetails
+  ""
+  tokens: [Token]!
+  ""
+  rewards: Reward!
+  ""
+  boosters: [Booster]!
+  ""
+  referralPercentage: BigInt!
+  ""
+  feeConfiguration: FeeConfiguration!
+}
+
+type User @entity {
+  "each transfer stored in transfer"
+  transfers: [Transfer]!
+  "claims"
+  claims: [ClaimHistory]!
+  ""
+  boosterHistory: [BoosterBuyHistory]!
+  ""
+  referrals: [Referral]!
+}
+
+type FeeConfiguration @entity {
+  ""
+  feeWalletAddress: String!
+  ""
+  feeAmount: BigInt!
+}
+
+type Reward @entity {
+  ""
+  rewardTokens: [String!]!
+  ""
+  pbr: [BigInt!]!
+}
+
+type CohortDetails @entity {
+  "unifarm cohort address"
+  cohortId: String!
+  "unifarm cohort version"
+  cohortVersion: String!
+  "unifarm cohort start block number"
+  startBlock: BigInt!
+  "unifarm cohort end block number"
+  endBlock: BigInt!
+  "epochBlocks"
+  epochBlocks: BigInt!
+  ""
+  hasLiquidityMining: Boolean!
+  ""
+  hasContainsWrappedToken: Boolean!
+  ""
+  hasCohortLockinAvaliable: Boolean!
+}
+
+type Token @entity {
+  "farm id"
+  fid: BigInt!
+  ""
+  farmToken: String!
+  ""
+  userMinStake: BigInt!
+  ""
+  userMaxStake: BigInt!
+  ""
+  totalStakeLimit: BigInt!
+  ""
+  decimals: BigInt!
+  ""
+  skip: Boolean!
+}
+
+type Booster @entity {
+  "booster pack Id"
+  bpid: BigInt!
+  ""
+  paymentToken: String!
+  ""
+  boosterPackAmount: BigInt!
+}
+
+type BoosterBuyHistory @entity {
+  "user wallet address"
+  user: String!
+  "booster"
+  booster: Booster!
+  ""
+  nftTokenId: BigInt!
+}
+
+type ClaimHistory @entity {
+  ""
+  user: String!
+  ""
+  cohort: Cohort!
+  ""
+  tokenId: BigInt!
+  ""
+  rValue: BigInt!
+}
+
+type Transfer @entity {
+  ""
+  cohort: Cohort!
+  ""
+  from: String!
+  ""
+  to: String!
+  ""
+  tokenId: BigInt!
+}
+
+type Referral @entity {
+  ""
+  cohort: Cohort!
+  ""
+  tokenId: BigInt!
+  ""
+  referedUser: String!
+  ""
+  referralAddress: String!
+  ""
+  farmId: BigInt!
+  ""
+  rValue: BigInt!
 }
