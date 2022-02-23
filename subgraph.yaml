@@ -1,8 +1,10 @@
 specVersion: 0.0.2
+description: Decentralized farming pool of DEFI’s top projects.
+github: "https://github.com/InfernalHeir/unifarm-subgraph"
 schema:
   file: ./schema.graphql
 dataSources:
-  - kind: ethereum
+  - kind: ethereum/contract
     name: UnifarmCohortFactoryUpgradeable
     network: rinkeby
     source:
@@ -13,14 +15,77 @@ dataSources:
       apiVersion: 0.0.5
       language: wasm/assemblyscript
       entities:
-        - AdminChanged
-        - Upgraded
+        - Cohort
       abis:
         - name: UnifarmCohortFactoryUpgradeable
           file: ./abis/UnifarmCohortFactoryUpgradeable.json
       eventHandlers:
-        - event: AdminChanged(address,address)
-          handler: handleAdminChanged
-        - event: Upgraded(indexed address)
-          handler: handleUpgraded
-      file: ./src/mapping.ts
+        - event: CohortConstructed(address)
+          handler: handleCohortConstruction
+      file: ./src/mapping/cohort.ts
+  - kind: ethereum/contract
+    name: "UnifarmCohortRegistryUpgradeable"
+    network: rinkeby
+    source:
+       address: "0xA55135CD9c41594259FDA511e30d40258D5f786d"
+       abi: UnifarmCohortRegistryUpgradeable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Cohort
+      abis:
+        - name: UnifarmCohortRegistryUpgradeable
+          file: ./abis/UnifarmCohortRegistryUpgradeable.json
+      eventHandlers:
+        - event: AddedCohortDetails(address,string,uint256,uint256,uint256,bool,bool,bool)
+          handler: handleCohorts
+        - event: TokenMetaDataDetails(address,address,uint32,uint256,uint256,uint256,uint8,bool)
+          handler: handleFarmTokens
+        - event: BoosterDetails(address,uint256,address,uint256)
+          handler: handleBoosters    
+      file: ./src/mapping/cohort.ts
+  - kind: ethereum/contract
+    name: "UnifarmNFTManagerUpgradeable"
+    network: rinkeby
+    source:
+       address: "0x49191d6e5e7E5c3fFEce035D86DDc7Ff7e3e87E3"
+       abi: UnifarmNFTManagerUpgradeable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Cohort
+      abis:
+        - name: UnifarmNFTManagerUpgradeable
+          file: ./abis/UnifarmNFTManagerUpgradeable.json
+      eventHandlers:
+        - event: FeeConfigurtionAdded(address,uint256)
+          handler: handleCohortFeeConfiguration
+        - event: Transfer(address,address,uint256)
+          handler: handleTransfers 
+      file: ./src/mapping/cohort.ts
+  - kind: ethereum/contract
+    name: "UnifarmRewardRegistryUpgradeable"
+    network: rinkeby
+    source:
+       address: "0x6f6F3b88AF58fC489958B8149a98866e0dBd7e45"
+       abi: UnifarmRewardRegistryUpgradeable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - Cohort
+      abis:
+        - name: UnifarmRewardRegistryUpgradeable
+          file: ./abis/UnifarmRewardRegistryUpgradeable.json
+      callHandlers:
+        - function: getRewardTokens(address)
+          handler: handleCohortRewards
+        - function: refPercentage()
+          handler: handleReferralPercentage   
+      file: ./src/mapping/cohort.ts        
+
