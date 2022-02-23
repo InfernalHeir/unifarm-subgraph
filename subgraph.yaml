@@ -1,0 +1,26 @@
+specVersion: 0.0.1
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: UnifarmCohortFactoryUpgradeable
+    network: rinkeby
+    source:
+      address: "0xaA700E4BAa45ddC47f67CDDbEA8Dc96E530141A7"
+      abi: UnifarmCohortFactoryUpgradeable
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.5
+      language: wasm/assemblyscript
+      entities:
+        - AdminChanged
+        - Upgraded
+      abis:
+        - name: UnifarmCohortFactoryUpgradeable
+          file: ./abis/UnifarmCohortFactoryUpgradeable.json
+      eventHandlers:
+        - event: AdminChanged(address,address)
+          handler: handleAdminChanged
+        - event: Upgraded(indexed address)
+          handler: handleUpgraded
+      file: ./src/mapping.ts
