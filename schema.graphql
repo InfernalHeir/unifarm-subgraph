@@ -3,18 +3,18 @@ Cohort details
 """
 type Cohort @entity {
   "fee configuration for protocol"
-  feeConfiguration: FeeConfiguration!
+  feeConfiguration: FeeConfiguration! @derivedFrom(field: "feeWalletAddress")
   "default referral percentage"
   referralPercentage: BigInt!
   "all the cohort detail will available in cohort"
-  cohort: CohortDetails
+  cohort: CohortDetails @derivedFrom(field: "cohortId")
   "all the cohort tokens"
-  tokens: [Token]!
+  tokens: [Token]! @derivedFrom(field: "fid")
   "all the reward token for cohort"
   rewards: Reward!
   "all the booster information in cohort"
-  boosters: [Booster]!
-  ""
+  boosters: [Booster]! @derivedFrom(field: "bpid")
+  "Cohort block number when it deployed"
   deployedAtBlockNumber: BigInt!
   "cohort timestamp when it deployed"
   deployedAt: BigInt!
@@ -68,7 +68,7 @@ Token Details
 type Token @entity {
   "farm id"
   fid: BigInt!
-  "farm token"
+  "farm token address"
   farmToken: Bytes!
   "user minimum staking allowed"
   userMinStake: BigInt!
@@ -80,13 +80,12 @@ type Token @entity {
   decimals: BigInt!
   "skip"
   skip: Boolean!
-  ""
+  "total staking in the farm"
   totalStaking: BigInt!
-  ""
+  "total number of participants in farm"
   totalParticipants: BigInt!
-  ""
+  "total active participants"
   activeParticipants: BigInt!
-
 }
 
 """
@@ -99,11 +98,11 @@ type Booster @entity {
   paymentToken: Bytes!
   "booster pack amount for booster pack"
   boosterPackAmount: BigInt!
-  ""
+  "total number of user who has active booster"
   numberOfBoostedUser: BigInt!
-  ""
+  "total sold booster"
   boosterSell: BigInt!
-  ""
+  "booster purchased details"
   booster: BoosterBuyHistory! @derivedFrom("booster")
 }
 
@@ -113,7 +112,7 @@ All bought booster pack details
 type BoosterBuyHistory @entity {
   "user wallet address"
   user: Bytes!
-  ""
+  "Cohort address"
   cohortId: Bytes!
   "booster pack details"
   booster: Booster!
@@ -146,7 +145,7 @@ NFT Transfer details
 """
 type Transfer @entity {
   "cohort address"
-  cohort: Cohort!
+  cohort: Cohort! @derivedFrom(field: "cohort")
   "sender address"
   from: Bytes!
   "reciever address"
@@ -166,7 +165,7 @@ Referral details
 """
 type Referral @entity {
   "cohort details"
-  cohort: Cohort!
+  cohort: Cohort! @derivedFrom(field: "cohort")
   "nft id"
   tokenId: BigInt!
   "referd user address"
