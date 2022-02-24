@@ -1,48 +1,63 @@
+"""
+Cohort details
+"""
 type Cohort @entity {
-  ""
+  "all the cohort detail will available in cohort"
   cohort: CohortDetails
-  ""
+  "all the cohort tokens"
   tokens: [Token]!
-  ""
+  "all the reward token for cohort"
   rewards: Reward!
-  ""
+  "all the booster information in cohort"
   boosters: [Booster]!
-  ""
+  "default referral percentage"
   referralPercentage: BigInt!
-  ""
+  "fee configuration for protocol"
   feeConfiguration: FeeConfiguration!
-  ""
+  "cohort timestamp when it deployed"
   deployedAt: BigInt!
 }
 
+"""
+User information who staked, claimed, bought booster, referrals
+"""
 type User @entity {
   "each transfer stored in transfer"
   transfers: [Transfer]!
-  "claims"
+  "each claim stored in claims"
   claims: [ClaimHistory]!
-  ""
+  "boosterpack bought information stored in boosterHistory"
   boosterHistory: [BoosterBuyHistory]!
-  ""
+  "all the referral information stored here"
   referrals: [Referral]!
 }
 
+"""
+Protocol fee configuration
+"""
 type FeeConfiguration @entity {
-  ""
-  feeWalletAddress: String!
-  ""
+  "fee wallet address stored in feeWalletAddress"
+  feeWalletAddress: Bytes!
+  "fee percentage stored in feeAmount"
   feeAmount: BigInt!
 }
 
+"""
+Reward Configuration
+"""
 type Reward @entity {
-  ""
+  "reward token stored in rewardTokens"
   rewardTokens: [String!]!
-  ""
+  "per block reward stored in pbr"
   pbr: [BigInt!]!
 }
 
+"""
+Cohort Details
+"""
 type CohortDetails @entity {
   "unifarm cohort address"
-  cohortId: String!
+  cohortId: Bytes!
   "unifarm cohort version"
   cohortVersion: String!
   "unifarm cohort start block number"
@@ -51,88 +66,106 @@ type CohortDetails @entity {
   endBlock: BigInt!
   "epochBlocks"
   epochBlocks: BigInt!
-  ""
+  "has liquidity mining in cohort"
   hasLiquidityMining: Boolean!
-  ""
+  "has weth token in cohort"
   hasContainsWrappedToken: Boolean!
-  ""
+  "has cohort lock in available"
   hasCohortLockinAvaliable: Boolean!
 }
 
+"""
+Token Details
+"""
 type Token @entity {
   "farm id"
   fid: BigInt!
-  ""
-  farmToken: String!
-  ""
+  "farm token"
+  farmToken: Bytes!
+  "user minimum staking allowed"
   userMinStake: BigInt!
-  ""
+  "user maximum staking allowed"
   userMaxStake: BigInt!
-  ""
+  "total stake limit of farm"
   totalStakeLimit: BigInt!
-  ""
+  "token decimals"
   decimals: BigInt!
-  ""
+  "skip"
   skip: Boolean!
 }
 
+"""
+Booster pack details
+"""
 type Booster @entity {
   "booster pack Id"
   bpid: BigInt!
-  ""
-  paymentToken: String!
-  ""
+  "payment token address"
+  paymentToken: Bytes!
+  "booster pack amount for booster pack"
   boosterPackAmount: BigInt!
 }
 
+"""
+All bought booster pack details
+"""
 type BoosterBuyHistory @entity {
   "user wallet address"
-  user: String!
-  "booster"
+  user: Bytes!
+  "booster pack details"
   booster: Booster!
-  ""
+  "nft token id"
   nftTokenId: BigInt!
 }
 
+"""
+Reward cliamed details
+"""
 type ClaimHistory @entity {
-  ""
-  user: String!
-  ""
+  "user address"
+  user: Bytes!
+  "cohort address"
   cohort: Cohort!
-  ""
+  "nft token id"
   tokenId: BigInt!
-  ""
+  "reward value"
   rValue: BigInt!
 }
 
+"""
+NFT Transfer details
+"""
 type Transfer @entity {
-  ""
+  "cohort address"
   cohort: Cohort!
-  ""
-  from: String!
-  ""
-  to: String!
-  ""
+  "sender address"
+  from: Bytes!
+  "reciever address"
+  to: Bytes!
+  "nft token id"
   tokenId: BigInt!
-  ""
+  "block number on which token is transferred"
   blockNumber: BigInt!
-  ""
+  "transaction hash"
   transactionHash: Bytes!
-  ""
+  "timestamp on which nft token is transferred"
   timestamp: BigInt!
 }
 
+"""
+Referral details
+"""
 type Referral @entity {
-  ""
+  "cohort details"
   cohort: Cohort!
-  ""
+  "nft id"
   tokenId: BigInt!
-  ""
-  referedUser: String!
-  ""
-  referralAddress: String!
-  ""
+  "referd user address"
+  referedUser: Bytes!
+  "referral address"
+  referralAddress: Bytes!
+  "farm id"
   farmId: BigInt!
-  ""
+  "reward value"
   rValue: BigInt!
 }
