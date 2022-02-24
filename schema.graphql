@@ -2,6 +2,10 @@
 Cohort details
 """
 type Cohort @entity {
+  "fee configuration for protocol"
+  feeConfiguration: FeeConfiguration!
+  "default referral percentage"
+  referralPercentage: BigInt!
   "all the cohort detail will available in cohort"
   cohort: CohortDetails
   "all the cohort tokens"
@@ -10,26 +14,10 @@ type Cohort @entity {
   rewards: Reward!
   "all the booster information in cohort"
   boosters: [Booster]!
-  "default referral percentage"
-  referralPercentage: BigInt!
-  "fee configuration for protocol"
-  feeConfiguration: FeeConfiguration!
+  ""
+  deployedAtBlockNumber: BigInt!
   "cohort timestamp when it deployed"
   deployedAt: BigInt!
-}
-
-"""
-User information who staked, claimed, bought booster, referrals
-"""
-type User @entity {
-  "each transfer stored in transfer"
-  transfers: [Transfer]!
-  "each claim stored in claims"
-  claims: [ClaimHistory]!
-  "boosterpack bought information stored in boosterHistory"
-  boosterHistory: [BoosterBuyHistory]!
-  "all the referral information stored here"
-  referrals: [Referral]!
 }
 
 """
@@ -92,6 +80,13 @@ type Token @entity {
   decimals: BigInt!
   "skip"
   skip: Boolean!
+  ""
+  totalStaking: BigInt!
+  ""
+  totalParticipants: BigInt!
+  ""
+  activeParticipants: BigInt!
+
 }
 
 """
@@ -104,6 +99,12 @@ type Booster @entity {
   paymentToken: Bytes!
   "booster pack amount for booster pack"
   boosterPackAmount: BigInt!
+  ""
+  numberOfBoostedUser: BigInt!
+  ""
+  boosterSell: BigInt!
+  ""
+  booster: BoosterBuyHistory! @derivedFrom("booster")
 }
 
 """
@@ -112,6 +113,8 @@ All bought booster pack details
 type BoosterBuyHistory @entity {
   "user wallet address"
   user: Bytes!
+  ""
+  cohortId: Bytes!
   "booster pack details"
   booster: Booster!
   "nft token id"
@@ -130,6 +133,12 @@ type ClaimHistory @entity {
   tokenId: BigInt!
   "reward value"
   rValue: BigInt!
+  "block number on which token is transferred"
+  blockNumber: BigInt!
+  "transaction hash"
+  transactionHash: Bytes!
+  "timestamp on which nft token is transferred"
+  timestamp: BigInt!
 }
 
 """
@@ -168,4 +177,10 @@ type Referral @entity {
   farmId: BigInt!
   "reward value"
   rValue: BigInt!
+  "block number on which token is transferred"
+  blockNumber: BigInt!
+  "transaction hash"
+  transactionHash: Bytes!
+  "timestamp on which nft token is transferred"
+  timestamp: BigInt!
 }
